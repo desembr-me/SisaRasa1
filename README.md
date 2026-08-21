@@ -1,58 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SisaRasa
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Dari sisa, jadi berkah.**
 
-## About Laravel
+SisaRasa adalah aplikasi web yang membantu rumah tangga menyelamatkan makanan sebelum terbuang sia-sia. Dibuat sebagai proyek untuk lomba pengembangan solusi *food waste* di Indonesia.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Latar belakangnya sederhana: menurut kajian Bappenas, Waste4Change & WRI (2021) serta data KLHK/SIPSN, Indonesia membuang 23–48 juta ton makanan setiap tahun — sekitar 40% dari total sampah nasional — dengan kerugian ekonomi hingga Rp551 triliun. SisaRasa mencoba menerjemahkan masalah berskala nasional itu menjadi tiga aksi kecil yang bisa dilakukan siapa saja hari ini.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tujuan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Mengurangi sisa makanan di rumah** — bantu orang menghabiskan bahan yang sudah ada di kulkas sebelum basi, alih-alih membeli/membuang lagi.
+2. **Menyalurkan makanan surplus** — hubungkan resto/toko yang punya makanan berlebih menjelang tutup dengan orang yang bisa memanfaatkannya, sebelum jadi sampah.
+3. **Membuat dampaknya terlihat** — setiap aksi kecil (masak dari sisa, klaim surplus) dicatat dan dihitung: berapa kg makanan, emisi karbon, dan nilai ekonomi yang terselamatkan. Dampak yang tidak terlihat sulit dirasakan; SisaRasa mencoba membuatnya konkret.
 
-## Learning Laravel
+## Fitur
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Sudah berfungsi
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Fitur | Deskripsi |
+|---|---|
+| **Sisa Checker** | Ketik bahan yang tersisa di kulkas (dipisah koma), konfirmasi/ubah daftarnya, lalu sistem mencocokkannya dengan koleksi resep lokal (bukan AI — pencocokan berbasis kecocokan bahan, lihat catatan di bawah) dan menyusun resep lengkap. |
+| **Dashboard Dampak** | Setiap resep yang dimasak atau surplus yang diklaim bisa dicatat sebagai "aksi". Dashboard menghitung total kg makanan terselamatkan, estimasi emisi CO2 dicegah, dan nilai ekonomi yang hemat, plus riwayat aktivitas. |
+| **Registrasi & pengelolaan Mitra** | Resto/toko bisa mendaftar sebagai mitra (`/mitra/register`) dengan profil toko (nama, alamat, koordinat), lalu mengelola listing makanan surplus mereka sendiri (buat, ubah, hapus) di `/mitra`. |
+| **Klaim listing** | Pengguna yang login bisa mengklaim listing milik mitra; klaim otomatis tercatat sebagai aksi di Dashboard Dampak mereka. |
+| **Panel Admin** | Pengguna dengan role `admin` (lihat akun demo di bawah) bisa melihat statistik seluruh platform dan mengelola daftar pengguna (cari, lihat detail, ubah role, hapus) di `/admin`. |
+| **Kalkulator Model Dampak** | Di landing page — slider untuk mengestimasi potensi dampak nasional jika sejumlah rumah tangga memakai SisaRasa (murni ilustratif, dilabeli jelas sebagai estimasi bukan riset resmi). |
+| **Cerita** | Tiga tulisan penjelas yang merangkum kebijakan resmi soal sisa pangan Indonesia (UU 18/2008, peta jalan Bappenas 2024, dll), bisa diakses lewat `/cerita/{slug}`. |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Dalam pengembangan / belum lengkap
 
-## Agentic Development
+- **Peta Surplus** — halaman publik untuk *melihat* dan mengklaim listing di peta (rencananya pakai Leaflet + OpenStreetMap, sudah terpasang sebagai dependency) belum dibangun. Model, controller, dan route (`/peta-surplus`) sudah ada, tapi *view*-nya belum — mengunjungi rute ini akan error sampai halamannya dibuat. Saat ini mitra bisa membuat listing lewat `/mitra`, tapi belum ada tempat bagi pengguna biasa untuk menemukannya.
+- **Cerita** belum ditautkan dari navigasi utama landing page (halaman & routing-nya berfungsi, hanya belum ada link masuk dari beranda).
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Catatan penting: kenapa Sisa Checker tidak pakai AI
 
-```bash
-composer require laravel/boost --dev
+Awalnya Sisa Checker dirancang memakai AI (OpenAI GPT-4o-mini) untuk mengenali bahan dari foto dan menyusun resep. Fitur ini sempat dibangun penuh, tapi akun OpenAI yang dipakai tidak punya kuota/billing aktif sehingga selalu gagal. Daripada membiarkan fitur inti tidak bisa dites, Sisa Checker diubah menjadi **pencocokan resep lokal**: pengguna mengetik bahan (bukan foto), sistem mencocokkannya dengan ~18 resep yang sudah diseed di database (`RecipeSeeder`), dan memilih resep dengan jumlah bahan yang paling cocok. Tidak butuh API key, tidak butuh koneksi internet, dan hasilnya konsisten.
 
-php artisan boost:install
+## Tech stack
+
+- **Backend**: Laravel 13 (PHP 8.3+), autentikasi dari Laravel Breeze (Blade + Alpine.js)
+- **Database**: SQLite (`database/database.sqlite`) — bisa diganti ke MySQL/PostgreSQL lewat `.env`
+- **Frontend**: Blade templates, Tailwind CSS v4 (via `@tailwindcss/vite`), Alpine.js untuk interaktivitas ringan
+- **Landing page**: HTML/CSS custom terpisah dari sisa aplikasi (`resources/css/landing.css`, `resources/js/landing.js`) — bukan Tailwind, didesain manual (font Fraunces + Plus Jakarta Sans + JetBrains Mono, palet hijau daun/mangga)
+- **Build tool**: Vite
+
+## Struktur database
+
+```
+users
+├─ id, name, email, password, role (user | admin | mitra), timestamps
+└─ relasi: hasMany rescues, hasOne store
+
+rescues                          -- aksi yang tercatat di Dashboard Dampak
+├─ id, user_id, source (masak | klaim), description, kg_saved, timestamps
+└─ belongsTo user
+
+recipes                          -- koleksi resep lokal untuk Sisa Checker
+└─ id, title, description, ingredients (json), steps (json),
+   cook_time_minutes, estimated_kg, timestamps
+
+stores                           -- profil toko/resto milik satu user (role: mitra)
+├─ id, user_id (unik), name, description, address, latitude, longitude, timestamps
+├─ belongsTo user
+└─ hasMany listings
+
+listings                         -- item makanan surplus yang diposting mitra
+├─ id, store_id, title, description, quantity,
+│  price_type (gratis | diskon), original_price, discounted_price,
+│  estimated_kg, expires_at, timestamps
+├─ belongsTo store
+└─ hasMany claims
+
+claims                           -- pengguna mengklaim satu listing
+├─ id, listing_id, user_id, quantity, timestamps
+└─ belongsTo listing, user
+
+articles                         -- konten "Cerita"
+└─ id, title, slug, excerpt, body, published_at, timestamps
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Tabel `password_reset_tokens`, `sessions`, `cache`, `jobs` adalah tabel standar bawaan Laravel/Breeze.
 
-## Contributing
+## Menjalankan proyek ini
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+npm install
 
-## Code of Conduct
+cp .env.example .env
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# buat file database SQLite kalau belum ada
+touch database/database.sqlite
 
-## Security Vulnerabilities
+php artisan migrate --seed   # menjalankan seeder: recipes, admin, articles
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+npm run build                 # atau `npm run dev` untuk mode development
 
-## License
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Kalau ingin memakai Sisa Checker versi AI di masa depan, isi `OPENAI_API_KEY` dan `OPENAI_MODEL` di `.env` — namun perlu diimplementasikan ulang karena integrasi OpenAI sudah dilepas dari kode saat ini (lihat catatan di atas).
+
+### Akun demo
+
+Setelah `php artisan migrate --seed`, tersedia dua akun:
+
+| Email | Password | Role |
+|---|---|---|
+| `admin@sisarasa.com` | `password` | admin — akses `/admin` |
+| `test@example.com` | `password` | user biasa |
+
+Untuk mendaftar sebagai mitra, gunakan `/mitra/register` (membuat akun baru dengan role `mitra`, bukan lewat dua akun di atas).
+
+## Struktur folder yang relevan
+
+```
+app/Http/Controllers/           -- DashboardController, SisaCheckerController, ClaimController,
+                                    Admin/AdminDashboardController, Mitra/*, ArticleController, dst.
+app/Models/                     -- User, Rescue, Recipe, Store, Listing, Claim, Article
+app/Services/RecipeMatcherService.php  -- logika pencocokan resep untuk Sisa Checker
+database/seeders/                -- RecipeSeeder (18 resep), AdminSeeder, ArticleSeeder
+resources/views/landing.blade.php      -- landing page (didesain manual, terpisah dari Breeze)
+resources/views/dashboard.blade.php    -- Dashboard Dampak pengguna
+resources/views/admin/                 -- panel admin
+resources/views/mitra/                 -- registrasi & pengelolaan listing mitra
+resources/views/sisa-checker/          -- alur 3 langkah Sisa Checker
+resources/css/landing.css              -- gaya khusus landing page
+resources/css/app.css                  -- gaya untuk halaman ber-autentikasi (Tailwind + token warna kustom)
+```
+
+## Lisensi
+
+Dibuat untuk lomba pengembangan solusi *food waste*. Dibangun di atas [Laravel](https://laravel.com), yang dilisensikan di bawah [MIT license](https://opensource.org/licenses/MIT).

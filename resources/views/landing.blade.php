@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ config('app.name', 'SisaRasa') }} — Dari Sisa, Jadi Berkah</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,19 +43,22 @@
 
   <!-- ================= HERO ================= -->
   <section class="hero" style="--section-bg:var(--paper)">
-    <div class="wrap hero-center">
-      <span class="eyebrow">Sebelum basi, selamatkan dulu</span>
-      <h1>Dari Sisa,<br><em>Jadi Berkah.</em></h1>
-      <p class="lead" style="margin-left:auto;margin-right:auto;">SisaRasa bantu kamu memasak dari bahan yang masih tersisa, menemukan makanan surplus di sekitar sebelum kedaluwarsa, dan melihat dampak nyata dari setiap porsi yang tidak berakhir jadi sampah.</p>
-      <div class="hero-ctas">
-        <a href="#fitur" class="btn btn-primary">Coba Sisa Checker →</a>
-        <a href="#fitur" class="btn btn-ghost">Lihat Peta Surplus</a>
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Sebelum basi, selamatkan dulu</span>
+        <h1>Dari Sisa,<br><em>Jadi Berkah.</em></h1>
+        <p class="lead">SisaRasa bantu kamu memasak dari bahan yang masih tersisa, menemukan makanan surplus di sekitar sebelum kedaluwarsa, dan melihat dampak nyata dari setiap porsi yang tidak berakhir jadi sampah.</p>
+        <div class="hero-ctas">
+          <a href="{{ auth()->check() ? route('sisa-checker.create') : route('register') }}" class="btn btn-primary">Coba Sisa Checker →</a>
+          <a href="#fitur" class="btn btn-ghost">Lihat Peta Surplus</a>
+        </div>
+        <div class="hero-stats">
+          <span class="stat"><b>23–48 jt ton</b> makanan terbuang / tahun</span>
+          <span class="stat">cukup beri makan <b>61–125 jt</b> orang</span>
+          <span class="stat"><b>Rp213–551 T</b> kerugian ekonomi / tahun</span>
+        </div>
       </div>
-    </div>
 
-    <div class="hero-globe">
-      <div class="hero-ring"></div>
-      <div class="hero-ring ring-inner"></div>
       <div class="stamp-wrap">
         <div class="stamp">
           <div class="stamp-state stamp-basi">
@@ -76,12 +80,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="wrap hero-stats">
-      <span class="stat"><b>23–48 jt ton</b> makanan terbuang / tahun</span>
-      <span class="stat">cukup beri makan <b>61–125 jt</b> orang</span>
-      <span class="stat"><b>Rp213–551 T</b> kerugian ekonomi / tahun</span>
     </div>
   </section>
 
@@ -160,29 +158,18 @@
         <p>Dari kulkas pribadi sampai dampak yang terlihat di layar — semua terhubung dalam satu alur sederhana.</p>
       </div>
 
-      <div class="feature-grid feature-wheel">
-        <div class="wheel-hub" aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-            <circle cx="15" cy="15" r="13.5" stroke="#F1F4E7" stroke-width="1.4" stroke-dasharray="2.5 3.2"/>
-            <path d="M10 16.5C10 13 12.5 10 15.5 9.5C15.5 12.5 13.5 14.5 10 16.5Z" fill="#F4903F"/>
-            <path d="M20 16.5C20 13 17.5 10 14.5 9.5C14.5 12.5 16.5 14.5 20 16.5Z" fill="#DCE6D0"/>
-          </svg>
-        </div>
-        <div class="wheel-spoke spoke-1" aria-hidden="true"></div>
-        <div class="wheel-spoke spoke-2" aria-hidden="true"></div>
-        <div class="wheel-spoke spoke-3" aria-hidden="true"></div>
-
-        <div class="feature-card node-1 reveal">
+      <div class="feature-grid">
+        <div class="feature-card reveal">
           <div class="tape"></div>
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z" stroke="#23281E" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3.4" stroke="#23281E" stroke-width="1.4"/></svg>
           </div>
           <h3>Sisa Checker</h3>
-          <p class="desc">Foto bahan yang masih tersisa di kulkas. AI mengenali bahannya dan menyusun resep yang benar-benar bisa kamu masak hari ini.</p>
-          <span class="feature-pill">AI Vision</span>
+          <p class="desc">Ketik bahan yang masih tersisa di kulkas, dan sistem carikan resep yang cocok dari koleksi resep sisa dapur yang benar-benar bisa kamu masak hari ini.</p>
+          <span class="feature-pill">Pencocokan Resep</span>
         </div>
 
-        <div class="feature-card node-2 reveal">
+        <div class="feature-card reveal">
           <div class="tape"></div>
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 12 2.5a7 7 0 0 1 7 7C19 14.8 12 21 12 21Z" stroke="#23281E" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="#23281E" stroke-width="1.4"/></svg>
@@ -192,7 +179,7 @@
           <span class="feature-pill">Live Map</span>
         </div>
 
-        <div class="feature-card node-3 reveal">
+        <div class="feature-card reveal">
           <div class="tape"></div>
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="#23281E" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -215,24 +202,18 @@
       <div class="how-steps">
         <div class="step reveal">
           <div class="step-num">01</div>
-          <div class="step-body">
-            <h3>Foto atau catat sisa</h3>
-            <p>Buka Sisa Checker, foto bahan di kulkas, atau ketik apa yang tersisa.</p>
-          </div>
+          <h3>Catat bahan sisa</h3>
+          <p>Buka Sisa Checker, lalu ketik bahan apa saja yang tersisa di kulkas.</p>
         </div>
         <div class="step reveal">
           <div class="step-num">02</div>
-          <div class="step-body">
-            <h3>Dapat resep atau surplus terdekat</h3>
-            <p>AI menyusun resep, atau kamu buka Peta Surplus untuk lihat makanan yang bisa diklaim di sekitarmu.</p>
-          </div>
+          <h3>Dapat resep atau surplus terdekat</h3>
+          <p>Sistem carikan resep yang cocok, atau kamu buka Peta Surplus untuk lihat makanan yang bisa diklaim di sekitarmu.</p>
         </div>
         <div class="step reveal">
           <div class="step-num">03</div>
-          <div class="step-body">
-            <h3>Masak, klaim, lihat dampaknya</h3>
-            <p>Setiap aksi otomatis masuk ke Dashboard Dampak — progresmu bertambah, sampah berkurang.</p>
-          </div>
+          <h3>Masak, klaim, lihat dampaknya</h3>
+          <p>Setiap aksi otomatis masuk ke Dashboard Dampak — progresmu bertambah, sampah berkurang.</p>
         </div>
       </div>
     </div>
@@ -276,7 +257,7 @@
     <div class="wrap">
       <span class="eyebrow">Mulai dari kulkasmu sendiri</span>
       <h2>Sisa hari ini, bisa jadi berkah malam ini.</h2>
-      <a href="{{ auth()->check() ? route('dashboard') : route('register') }}" class="btn btn-primary">Coba Sisa Checker Sekarang</a>
+      <a href="{{ auth()->check() ? route('sisa-checker.create') : route('register') }}" class="btn btn-primary">Coba Sisa Checker Sekarang</a>
       <p class="sub">Gratis. Tanpa kartu, tanpa ribet.</p>
     </div>
   </section>
@@ -286,33 +267,24 @@
 <footer>
   <div class="wrap">
     <div class="footer-top">
-      <div class="footer-col footer-brand">
-        <a href="#top" class="logo">
-          <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
-            <circle cx="15" cy="15" r="13.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.5 3.2"/>
-            <path d="M10 16.5C10 13 12.5 10 15.5 9.5C15.5 12.5 13.5 14.5 10 16.5Z" fill="#F4903F"/>
-            <path d="M20 16.5C20 13 17.5 10 14.5 9.5C14.5 12.5 16.5 14.5 20 16.5Z" fill="#8DBF87"/>
-          </svg>
-          SisaRasa
-        </a>
-        <p class="footer-tagline">Dari sisa, jadi berkah — selamatkan makanan sebelum basi.</p>
-      </div>
-      <div class="footer-col">
-        <span class="footer-heading">Navigasi</span>
-        <ul class="footer-links">
-          <li><a href="#fitur">Fitur</a></li>
-          <li><a href="#cara-kerja">Cara Kerja</a></li>
-          <li><a href="#dampak">Dampak</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <span class="footer-heading">Mulai</span>
+      <a href="#top" class="logo">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
+          <circle cx="15" cy="15" r="13.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.5 3.2"/>
+          <path d="M10 16.5C10 13 12.5 10 15.5 9.5C15.5 12.5 13.5 14.5 10 16.5Z" fill="#F4903F"/>
+          <path d="M20 16.5C20 13 17.5 10 14.5 9.5C14.5 12.5 16.5 14.5 20 16.5Z" fill="#8DBF87"/>
+        </svg>
+        SisaRasa
+      </a>
+      <ul class="footer-links">
+        <li><a href="#fitur">Fitur</a></li>
+        <li><a href="#cara-kerja">Cara Kerja</a></li>
+        <li><a href="#dampak">Dampak</a></li>
         @guest
-          <a href="{{ route('register') }}" class="btn btn-ghost footer-cta">Mulai Sekarang</a>
+          <li><a href="{{ route('register') }}">Mulai Sekarang</a></li>
         @else
-          <a href="{{ route('dashboard') }}" class="btn btn-ghost footer-cta">Ke Dashboard</a>
+          <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
         @endguest
-      </div>
+      </ul>
     </div>
     <div class="footer-bottom">
       <span>© {{ now()->year }} SisaRasa — dari sisa, jadi berkah.</span>

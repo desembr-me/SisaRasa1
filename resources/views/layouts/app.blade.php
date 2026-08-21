@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'SisaRasa') }}</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
         @fonts
 

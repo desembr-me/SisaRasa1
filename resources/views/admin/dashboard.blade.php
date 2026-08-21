@@ -17,7 +17,7 @@
                     Pengguna berhasil dihapus.
                 </div>
             @elseif (session('error'))
-                <div class="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 font-medium">
+                <div class="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-400 font-medium">
                     {{ session('error') }}
                 </div>
             @endif
@@ -52,7 +52,7 @@
                     <h3 class="font-semibold text-[var(--ink)]">Kelola pengguna</h3>
                     <form method="GET" action="{{ route('admin.dashboard') }}" class="flex gap-2">
                         <input type="text" name="q" value="{{ $q }}" placeholder="Cari nama atau email..."
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-sm">
+                            class="bg-[var(--paper-card)] text-[var(--ink)] border-[var(--line)] focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-sm">
                         <x-secondary-button type="submit">Cari</x-secondary-button>
                     </form>
                 </div>
