@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+:root{
+    --paper:#F1F4E7;
+    --paper-warm:#EAE6D2;
+    --paper-card:#FBFAF3;
+    --ink:#23281E;
+    --ink-soft:#565C43;
+    --mango:#F4903F;
+    --mango-deep:#D9701F;
+    --leaf:#3F6B3D;
+    --leaf-soft:#DCE6D0;
+    --line:#C7BF9C;
+}
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* retint Tailwind's indigo scale to the SisaRasa leaf palette so every
+       Breeze component (buttons, active nav links, focus rings, checkboxes)
+       picks up the brand color instead of default blue/indigo */
+    --color-indigo-50: #EAF1E7;
+    --color-indigo-100: #DCE6D0;
+    --color-indigo-200: #C3D9AE;
+    --color-indigo-300: #A2C489;
+    --color-indigo-400: #74A362;
+    --color-indigo-500: #3F6B3D;
+    --color-indigo-600: #355C33;
+    --color-indigo-700: #2C4D2A;
+    --color-indigo-800: #233D21;
+    --color-indigo-900: #1A2E19;
+}
