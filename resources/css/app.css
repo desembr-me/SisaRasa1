@@ -21,19 +21,25 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* retint Tailwind's indigo scale to the SisaRasa leaf palette so every
+    /* retint Tailwind's indigo scale to the SisaRasa berry palette so every
        Breeze component (buttons, active nav links, focus rings, checkboxes)
-       picks up the brand color instead of default blue/indigo */
-    --color-indigo-50: #EAF1E7;
-    --color-indigo-100: #DCE6D0;
-    --color-indigo-200: #C3D9AE;
-    --color-indigo-300: #A2C489;
-    --color-indigo-400: #74A362;
-    --color-indigo-500: #3F6B3D;
-    --color-indigo-600: #355C33;
-    --color-indigo-700: #2C4D2A;
-    --color-indigo-800: #233D21;
-    --color-indigo-900: #1A2E19;
+       picks up the brand accent instead of default blue/indigo */
+    --color-indigo-50: #F7E9EE;
+    --color-indigo-100: #EDCBD8;
+    --color-indigo-200: #DE9FB6;
+    --color-indigo-300: #CC7093;
+    --color-indigo-400: #BC4E76;
+    --color-indigo-500: #B23A5E;
+    --color-indigo-600: #8F2C49;
+    --color-indigo-700: #72233A;
+    --color-indigo-800: #551A2B;
+    --color-indigo-900: #38111D;
 }
 
 body{ background:var(--paper); color:var(--ink); }
+
+* { cursor: url('/images/cursor-carrot.svg') 3 3, auto; }
+input[type="text"], input[type="email"], input[type="password"], input[type="search"],
+input[type="tel"], input[type="url"], input[type="number"], textarea, [contenteditable="true"] {
+    cursor: text;
+}

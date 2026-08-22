@@ -19,7 +19,7 @@
                     <div>
                         <x-input-label for="ingredients_text" value="Ketik bahan (pisahkan dengan koma)" />
                         <x-text-input id="ingredients_text" name="ingredients_text" type="text" class="mt-1 block w-full"
-                            :value="old('ingredients_text')" placeholder="mis. wortel, telur, nasi putih" required autofocus />
+                            :value="old('ingredients_text', request('bahan'))" placeholder="mis. wortel, telur, nasi putih" required autofocus />
                         <x-input-error :messages="$errors->get('ingredients_text')" class="mt-2" />
                     </div>
 
