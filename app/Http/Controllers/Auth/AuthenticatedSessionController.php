@@ -28,7 +28,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $home = $request->user()->isMitra() ? route('mitra.listings.index', absolute: false) : route('dashboard', absolute: false);
+
+        return redirect()->intended($home);
     }
 
     /**

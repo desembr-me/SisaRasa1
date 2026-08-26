@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['quantity'])]
+#[Fillable(['user_id', 'quantity'])]
 class Claim extends Model
 {
     public function listing(): BelongsTo

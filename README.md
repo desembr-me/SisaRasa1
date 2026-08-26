@@ -33,7 +33,7 @@ Latar belakangnya sederhana: menurut kajian Bappenas, Waste4Change & WRI (2021) 
 
 ## Catatan penting: kenapa Sisa Checker tidak pakai AI
 
-Awalnya Sisa Checker dirancang memakai AI (OpenAI GPT-4o-mini) untuk mengenali bahan dari foto dan menyusun resep. Fitur ini sempat dibangun penuh, tapi akun OpenAI yang dipakai tidak punya kuota/billing aktif sehingga selalu gagal. Daripada membiarkan fitur inti tidak bisa dites, Sisa Checker diubah menjadi **pencocokan resep lokal**: pengguna mengetik bahan (bukan foto), sistem mencocokkannya dengan ~18 resep yang sudah diseed di database (`RecipeSeeder`), dan memilih resep dengan jumlah bahan yang paling cocok. Tidak butuh API key, tidak butuh koneksi internet, dan hasilnya konsisten.
+Awalnya Sisa Checker dirancang memakai AI (OpenAI GPT-4o-mini) untuk mengenali bahan dari foto dan menyusun resep. Fitur ini sempat dibangun penuh, tapi akun OpenAI yang dipakai tidak punya kuota/billing aktif sehingga selalu gagal. Daripada membiarkan fitur inti tidak bisa dites, Sisa Checker diubah menjadi **pencocokan resep**: pengguna mengetik bahan (bukan foto), sistem menerjemahkan bahan tersebut ke Inggris (`IngredientTranslator`) lalu mencarikan resep secara *live* dari [TheMealDB](https://www.themealdb.com/api.php) (API gratis, tanpa perlu daftar/API key), dan memilih resep dengan jumlah bahan yang paling cocok — lengkap dengan foto makanannya. Konsekuensinya: butuh koneksi internet saat dipakai, dan resep/instruksinya berbahasa Inggris karena TheMealDB belum punya masakan Indonesia. Tabel `recipes` beserta `RecipeSeeder` (18 resep lokal) masih ada di kode sebagai peninggalan versi sebelumnya, tapi sudah tidak dipakai (tidak lagi dipanggil dari `DatabaseSeeder`).
 
 ## Tech stack
 
@@ -103,23 +103,25 @@ Kalau ingin memakai Sisa Checker versi AI di masa depan, isi `OPENAI_API_KEY` da
 
 ### Akun demo
 
-Setelah `php artisan migrate --seed`, tersedia dua akun:
+Setelah `php artisan migrate --seed`, tersedia tiga akun (dibuat oleh `RoleSeeder`, satu per role):
 
 | Email | Password | Role |
 |---|---|---|
 | `admin@sisarasa.com` | `password` | admin — akses `/admin` |
 | `test@example.com` | `password` | user biasa |
+| `mitra@sisarasa.com` | `password` | mitra — akses `/mitra`, sudah punya toko ("Warung Berkah") tapi belum ada listing |
 
-Untuk mendaftar sebagai mitra, gunakan `/mitra/register` (membuat akun baru dengan role `mitra`, bukan lewat dua akun di atas).
+Mitra baru juga tetap bisa daftar sendiri lewat `/mitra/register`.
 
 ## Struktur folder yang relevan
 
 ```
 app/Http/Controllers/           -- DashboardController, SisaCheckerController, ClaimController,
                                     Admin/AdminDashboardController, Mitra/*, ArticleController, dst.
-app/Models/                     -- User, Rescue, Recipe, Store, Listing, Claim, Article
-app/Services/RecipeMatcherService.php  -- logika pencocokan resep untuk Sisa Checker
-database/seeders/                -- RecipeSeeder (18 resep), AdminSeeder, ArticleSeeder
+app/Models/                     -- User, Rescue, Recipe (tidak dipakai lagi), Store, Listing, Claim, Article
+app/Services/RecipeMatcherService.php  -- cari & cocokkan resep dari TheMealDB untuk Sisa Checker
+app/Services/IngredientTranslator.php  -- kamus bahan Indonesia -> Inggris untuk pencarian di TheMealDB
+database/seeders/                -- RoleSeeder (akun demo per role), ArticleSeeder (RecipeSeeder sudah tidak dipanggil)
 resources/views/landing.blade.php      -- landing page (didesain manual, terpisah dari Breeze)
 resources/views/dashboard.blade.php    -- Dashboard Dampak pengguna
 resources/views/admin/                 -- panel admin

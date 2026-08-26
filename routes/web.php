@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('landing');
 });
 
+Route::get('/gerakan', function () {
+    return view('gerakan');
+})->name('gerakan');
+
 Route::get('/cerita/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 Route::middleware('guest')->group(function () {

@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2 font-semibold text-lg text-[var(--ink)]">
+                    <a href="{{ auth()->user()->isMitra() ? route('mitra.listings.index') : route('dashboard') }}" class="flex items-center gap-2 font-semibold text-lg text-[var(--ink)]">
                         <x-application-logo class="block h-8 w-auto" />
                         SisaRasa
                     </a>
@@ -13,12 +13,18 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('sisa-checker.create')" :active="request()->routeIs('sisa-checker.*')">
-                        Sisa Checker
-                    </x-nav-link>
+                    @if (auth()->user()->isMitra())
+                        <x-nav-link :href="route('mitra.listings.index')" :active="request()->routeIs('mitra.*')">
+                            Toko Saya
+                        </x-nav-link>
+                    @else
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('sisa-checker.create')" :active="request()->routeIs('sisa-checker.*')">
+                            Sisa Checker
+                        </x-nav-link>
+                    @endif
                     @if (auth()->user()->isAdmin())
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                             Admin
@@ -76,12 +82,18 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('sisa-checker.create')" :active="request()->routeIs('sisa-checker.*')">
-                Sisa Checker
-            </x-responsive-nav-link>
+            @if (auth()->user()->isMitra())
+                <x-responsive-nav-link :href="route('mitra.listings.index')" :active="request()->routeIs('mitra.*')">
+                    Toko Saya
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('sisa-checker.create')" :active="request()->routeIs('sisa-checker.*')">
+                    Sisa Checker
+                </x-responsive-nav-link>
+            @endif
             @if (auth()->user()->isAdmin())
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                     Admin

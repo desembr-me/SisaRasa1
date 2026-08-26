@@ -11,6 +11,9 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/landing.css',
                 'resources/js/landing.js',
+                'resources/js/dashboard.js',
+                'resources/css/gerakan.css',
+                'resources/js/gerakan.js',
             ],
             refresh: true,
             fonts: [

@@ -15,6 +15,15 @@
             @endif
 
             <div class="bg-[var(--paper-card)] border border-[var(--line)] rounded-lg p-6 space-y-5">
+                @if (! empty($recipe['image']))
+                    <img
+                        src="{{ $recipe['image'] }}"
+                        alt="{{ $recipe['title'] }}"
+                        class="w-full h-56 sm:h-72 object-cover rounded-lg border border-[var(--line)]"
+                        loading="lazy"
+                    >
+                @endif
+
                 <div>
                     <h3 class="font-serif text-2xl font-semibold text-[var(--ink)]">{{ $recipe['title'] }}</h3>
                     <p class="mt-2 text-sm text-[var(--ink-soft)]">{{ $recipe['description'] }}</p>

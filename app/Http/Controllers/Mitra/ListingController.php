@@ -16,10 +16,14 @@ class ListingController extends Controller
     public function index(Request $request): View
     {
         $store = $request->user()->store;
+        $listings = $store->listings()->withSum('claims', 'quantity')->latest()->get();
 
         return view('mitra.listings.index', [
             'store' => $store,
-            'listings' => $store->listings()->latest()->get(),
+            'listings' => $listings,
+            'activeCount' => $listings->filter(fn (Listing $l) => $l->isAvailable())->count(),
+            'totalClaimed' => (int) $listings->sum(fn (Listing $l) => $l->claims_sum_quantity ?? 0),
+            'totalKgDistributed' => $listings->sum(fn (Listing $l) => (float) ($l->claims_sum_quantity ?? 0) * (float) $l->estimated_kg),
         ]);
     }
 

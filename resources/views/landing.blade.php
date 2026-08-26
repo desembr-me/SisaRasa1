@@ -26,6 +26,7 @@
       <li><a href="#fitur">Fitur</a></li>
       <li><a href="#cara-kerja">Cara Kerja</a></li>
       <li><a href="#dampak">Dampak</a></li>
+      <li><a href="{{ route('gerakan') }}">Gerakan Bumi</a></li>
       @guest
         <li><a href="{{ route('login') }}">Masuk</a></li>
         <li><a href="{{ route('register') }}" class="nav-cta">Mulai Sekarang</a></li>
@@ -466,6 +467,7 @@
         <li><a href="#fitur">Fitur</a></li>
         <li><a href="#cara-kerja">Cara Kerja</a></li>
         <li><a href="#dampak">Dampak</a></li>
+        <li><a href="{{ route('gerakan') }}">Gerakan Bumi</a></li>
         @guest
           <li><a href="{{ route('register') }}">Mulai Sekarang</a></li>
         @else

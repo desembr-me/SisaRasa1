@@ -35,7 +35,9 @@ class Listing extends Model
 
     public function remainingQuantity(): int
     {
-        return max(0, $this->quantity - $this->claims()->sum('quantity'));
+        $claimed = $this->claims_sum_quantity ?? $this->claims()->sum('quantity');
+
+        return max(0, $this->quantity - $claimed);
     }
 
     public function isAvailable(): bool
