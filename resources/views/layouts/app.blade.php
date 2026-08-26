@@ -8,7 +8,9 @@
         <title>{{ config('app.name', 'SisaRasa') }}</title>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-        @fonts
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

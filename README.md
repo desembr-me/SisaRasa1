@@ -37,7 +37,7 @@ Awalnya Sisa Checker dirancang memakai AI (OpenAI GPT-4o-mini) untuk mengenali b
 
 ## Tech stack
 
-- **Backend**: Laravel 13 (PHP 8.3+), autentikasi dari Laravel Breeze (Blade + Alpine.js)
+- **Backend**: Laravel 12 (PHP 8.3+), autentikasi dari Laravel Breeze (Blade + Alpine.js)
 - **Database**: SQLite (`database/database.sqlite`) — bisa diganti ke MySQL/PostgreSQL lewat `.env`
 - **Frontend**: Blade templates, Tailwind CSS v4 (via `@tailwindcss/vite`), Alpine.js untuk interaktivitas ringan
 - **Landing page**: HTML/CSS custom terpisah dari sisa aplikasi (`resources/css/landing.css`, `resources/js/landing.js`) — bukan Tailwind, didesain manual (font Fraunces + Plus Jakarta Sans + JetBrains Mono, palet hijau daun/mangga)
@@ -92,7 +92,7 @@ php artisan key:generate
 # buat file database SQLite kalau belum ada
 touch database/database.sqlite
 
-php artisan migrate --seed   # menjalankan seeder: recipes, admin, articles
+php artisan migrate --seed   # menjalankan seeder: role (user/admin/mitra), articles
 
 npm run build                 # atau `npm run dev` untuk mode development
 
@@ -112,6 +112,53 @@ Setelah `php artisan migrate --seed`, tersedia tiga akun (dibuat oleh `RoleSeede
 | `mitra@sisarasa.com` | `password` | mitra — akses `/mitra`, sudah punya toko ("Warung Berkah") tapi belum ada listing |
 
 Mitra baru juga tetap bisa daftar sendiri lewat `/mitra/register`.
+
+## Deploy ke shared hosting / VPS (mis. HestiaCP)
+
+Dua file penting **sengaja tidak ikut ke GitHub** (praktik umum, bukan bug): `.env` (rahasia per-server) dan `database/database.sqlite` (data lokal), plus `public/build/` (hasil compile Vite) yang di-gitignore. Ketiganya harus dibuat/diisi ulang di server — kalau terlewat, gejalanya bisa berupa halaman error di **semua** URL (bukan cuma soal database), karena Laravel butuh `public/build/manifest.json` untuk memuat CSS/JS.
+
+**1. Build assets dulu di komputer lokal**, karena banyak shared hosting tidak menyediakan Node.js di SSH-nya:
+```bash
+npm run build
+```
+Ini menghasilkan folder `public/build/`. Folder ini harus ikut di-upload ke server (lewat `git add -f public/build` di branch deploy terpisah, atau upload manual via SFTP/File Manager) — jangan andalkan `npm run build` bisa jalan di server kalau belum yakin Node tersedia di sana.
+
+**2. Upload/pull kode ke server**, lalu di server (lewat SSH atau Web Terminal HestiaCP):
+```bash
+composer install --no-dev --optimize-autoloader   # kalau composer tersedia di server;
+                                                     # kalau tidak, upload folder vendor/ dari lokal juga
+
+cp .env.example .env
+php artisan key:generate
+```
+
+**3. Isi `.env` sesuai server** — minimal ubah ini:
+```
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://domainkamu.com
+```
+
+**4. Database** — di shared hosting berbasis HestiaCP, database MySQL lewat panel biasanya lebih stabil daripada SQLite (tidak tergantung izin tulis folder & ekstensi `pdo_sqlite`). Buat database baru di menu **Databases** HestiaCP, lalu isi `.env`:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database_dari_hestiacp
+DB_USERNAME=user_dari_hestiacp
+DB_PASSWORD=password_dari_hestiacp
+```
+Kalau tetap ingin pakai SQLite, cukup `touch database/database.sqlite` dan pastikan folder `database/` bisa ditulis oleh user PHP-FPM domain tersebut.
+
+**5. Jalankan migrasi + seeder, lalu cek folder yang wajib writable:**
+```bash
+php artisan migrate --seed --force
+chmod -R 775 storage bootstrap/cache
+```
+
+**6. Arahkan document root domain ke folder `public/`** (bukan ke root project) lewat pengaturan Web domain di HestiaCP — supaya `.env`, `app/`, dan file lain di luar `public/` tidak bisa diakses langsung lewat browser.
+
+**Kalau masih error setelah semua ini**, set sementara `APP_DEBUG=true` di `.env` server untuk melihat pesan error aslinya (Laravel dengan `APP_DEBUG=false` cuma menampilkan halaman "500 | Server Error" generik tanpa detail) — lalu jangan lupa kembalikan ke `false` setelah masalahnya ketemu, karena `APP_DEBUG=true` di production membocorkan detail internal aplikasi.
 
 ## Struktur folder yang relevan
 

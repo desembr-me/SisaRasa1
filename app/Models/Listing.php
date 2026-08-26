@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['title', 'description', 'quantity', 'price_type', 'original_price', 'discounted_price', 'estimated_kg', 'expires_at'])]
 class Listing extends Model
 {
+    protected $fillable = ['title', 'description', 'quantity', 'price_type', 'original_price', 'discounted_price', 'estimated_kg', 'expires_at'];
+
     protected function casts(): array
     {
         return [
